@@ -1,6 +1,5 @@
 #[cfg(test)]
-use crate::domain::neighborhood::Neighborhood;
-use crate::domain::cell::Cell;
+use crate::domain::{neighborhood::Neighborhood, cell::Cell};
 
 #[test]
 fn test_new_neighborhood() {
@@ -71,4 +70,55 @@ fn test_neighborhood_iter() {
     assert_eq!(iter[6].y, 1);
     assert_eq!(iter[7].x, 1);
     assert_eq!(iter[7].y, 1);
+}
+
+#[test]
+fn test_neighborhood_zero_x_index(){
+    let cell = Cell::new(0, 2, 5).unwrap();
+    let neighborhood = Neighborhood::new(&cell);
+
+    assert_eq!(neighborhood.left.x, 4);
+    assert_eq!(neighborhood.upper_left.x, 4);
+    assert_eq!(neighborhood.bottom_left.x, 4);
+}
+
+#[test]
+fn test_neighborhood_zero_y_index(){
+    let cell = Cell::new(2, 0, 5).unwrap();
+    let neighborhood = Neighborhood::new(&cell);
+
+    assert_eq!(neighborhood.top.y, 4);
+    assert_eq!(neighborhood.upper_right.y, 4);
+    assert_eq!(neighborhood.upper_right.y, 4);
+}
+
+#[test]
+fn test_neighborhood_max_x_index(){
+    let cell = Cell::new(4, 2, 5).unwrap();
+    let neighborhood = Neighborhood::new(&cell);
+
+    assert_eq!(neighborhood.right.x, 0);
+    assert_eq!(neighborhood.upper_right.x, 0);
+    assert_eq!(neighborhood.bottom_right.x, 0);
+}
+
+#[test]
+fn test_neighborhood_max_y_index(){
+    let cell = Cell::new(2, 4, 5).unwrap();
+    let neighborhood = Neighborhood::new(&cell);
+
+    assert_eq!(neighborhood.bottom.y, 0);
+    assert_eq!(neighborhood.bottom_left.y, 0);
+    assert_eq!(neighborhood.bottom_right.y, 0);
+}
+
+#[test]
+fn test_neighborhood_origin() {
+    let cell = Cell::new(0, 0, 5).unwrap();
+    let neighborhood = Neighborhood::new(&cell);
+
+    assert_eq!(neighborhood.top.x, 0);
+    assert_eq!(neighborhood.top.y, 4);
+    assert_eq!(neighborhood.upper_left.x, 4);
+    assert_eq!(neighborhood.upper_right.y, 4);
 }

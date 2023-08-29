@@ -1,5 +1,8 @@
+use std::fmt;
+
 use super::cell::Cell;
 
+#[derive(Debug)]
 pub struct Neighborhood {
     pub left: Cell,
     pub right: Cell,
@@ -36,5 +39,20 @@ impl Neighborhood {
             self.bottom,
             self.bottom_right
         ]
+    }
+}
+
+impl fmt::Display for Neighborhood {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}:{} {}:{} {}:{}\n {}:{} X:X {}:{}\n {}:{} {}:{} {}:{}", 
+            self.upper_left.x, self.upper_left.y,
+            self.top.x, self.top.y,
+            self.upper_right.x, self.upper_right.y,
+            self.left.x, self.left.y,
+            self.right.x, self.right.y,
+            self.bottom_left.x, self.bottom_left.y,
+            self.bottom.x, self.bottom.y,
+            self.bottom_right.x, self.bottom_right.y
+        )
     }
 }
