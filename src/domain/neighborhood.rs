@@ -56,14 +56,6 @@ fn _parse(cell: Option<Cell>) -> String {
 
 impl fmt::Display for Neighborhood {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    let left = match self.left {
-      Some(ref x) => format!("{}", x),
-      None => String::from("None"),
-    };
-    let top = match self.top {
-      Some(ref x) => format!("{}", x),
-      None => String::from("None"),
-    };
     write!(
       f,
       "{} {} {}\n {} X:X {}\n {} {} {}",
