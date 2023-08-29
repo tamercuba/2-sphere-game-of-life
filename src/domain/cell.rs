@@ -15,117 +15,68 @@ impl Cell {
     return Ok(Cell { x, y, size });
   }
 
-  pub fn get_left(&self) -> Cell {
-    let new_x: i16;
-
+  pub fn get_left(&self) -> Option<Cell> {
     if self.x == 0 {
-      new_x = self.size - 1;
-    } else {
-      new_x = self.x - 1;
+      return None;
     }
 
-    return Cell::new(new_x, self.y, self.size).unwrap();
+    return Some(Cell::new(self.x - 1, self.y, self.size).unwrap());
   }
 
-  pub fn get_right(&self) -> Cell {
-    let new_x: i16;
+  pub fn get_right(&self) -> Option<Cell> {
     if self.x == self.size - 1 {
-      new_x = 0;
-    } else {
-      new_x = self.x + 1;
+      return None;
     }
-    return Cell::new(new_x, self.y, self.size).unwrap();
+
+    return Some(Cell::new(self.x + 1, self.y, self.size).unwrap());
   }
 
-  pub fn get_top(&self) -> Cell {
-    let new_y: i16;
+  pub fn get_top(&self) -> Option<Cell> {
     if self.y == 0 {
-      new_y = self.size - 1;
-    } else {
-      new_y = self.y - 1;
+      return None;
     }
-    return Cell::new(self.x, new_y, self.size).unwrap();
+
+    return Some(Cell::new(self.x, self.y - 1, self.size).unwrap());
   }
 
-  pub fn get_bottom(&self) -> Cell {
-    let new_y: i16;
+  pub fn get_bottom(&self) -> Option<Cell> {
     if self.y == self.size - 1 {
-      new_y = 0;
-    } else {
-      new_y = self.y + 1;
+      return None;
     }
-    return Cell::new(self.x, new_y, self.size).unwrap();
+
+    return Some(Cell::new(self.x, self.y + 1, self.size).unwrap());
   }
 
-  pub fn get_upper_left(&self) -> Cell {
-    let new_x: i16;
-    let new_y: i16;
-
-    if self.x == 0 {
-      new_x = self.size - 1;
-    } else {
-      new_x = self.x - 1;
-    }
-    if self.y == 0 {
-      new_y = self.size - 1;
-    } else {
-      new_y = self.y - 1;
+  pub fn get_upper_left(&self) -> Option<Cell> {
+    if self.x == 0 || self.y == 0 {
+      return None;
     }
 
-    return Cell::new(new_x, new_y, self.size).unwrap();
+    return Some(Cell::new(self.x - 1, self.y - 1, self.size).unwrap());
   }
 
-  pub fn get_upper_right(&self) -> Cell {
-    let new_y: i16;
-    let new_x: i16;
-
-    if self.x == self.size - 1 {
-      new_x = 0;
-    } else {
-      new_x = self.x + 1;
-    }
-    if self.y == 0 {
-      new_y = self.size - 1;
-    } else {
-      new_y = self.y - 1;
+  pub fn get_upper_right(&self) -> Option<Cell> {
+    if self.x == self.size - 1 || self.y == 0 {
+      return None;
     }
 
-    return Cell::new(new_x, new_y, self.size).unwrap();
+    return Some(Cell::new(self.x + 1, self.y - 1, self.size).unwrap());
   }
 
-  pub fn get_bottom_left(&self) -> Cell {
-    let new_y: i16;
-    let new_x: i16;
-
-    if self.x == 0 {
-      new_x = self.size - 1;
-    } else {
-      new_x = self.x - 1;
-    }
-    if self.y == self.size - 1 {
-      new_y = 0;
-    } else {
-      new_y = self.y + 1;
+  pub fn get_bottom_left(&self) -> Option<Cell> {
+    if self.x == 0 || self.y == self.size - 1 {
+      return None;
     }
 
-    return Cell::new(new_x, new_y, self.size).unwrap();
+    return Some(Cell::new(self.x - 1, self.y + 1, self.size).unwrap());
   }
 
-  pub fn get_bottom_right(&self) -> Cell {
-    let new_y: i16;
-    let new_x: i16;
+  pub fn get_bottom_right(&self) -> Option<Cell> {
+    if self.x == self.size - 1 || self.y == self.size - 1 {
+      return None;
+    }
 
-    if self.x == self.size - 1 {
-      new_x = 0;
-    } else {
-      new_x = self.x + 1;
-    }
-    if self.y == self.size - 1 {
-      new_y = 0;
-    } else {
-      new_y = self.y + 1;
-    }
-    return Cell::new(new_x, new_y, self.size).unwrap();
+    return Some(Cell::new(self.x + 1, self.y + 1, self.size).unwrap());
   }
 }
 

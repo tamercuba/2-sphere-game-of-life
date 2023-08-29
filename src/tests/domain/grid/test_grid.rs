@@ -70,9 +70,9 @@ fn test_grid_mutate_2() {
 #[test]
 fn test_grid_mutate_3() {
   // Before: 0 0 0 0 0  After: 0 0 0 0 0
-  //         0 0 0 0 0         1 0 0 0 0
-  //         1 1 0 0 1         1 0 0 0 0
-  //         0 0 0 0 0         1 0 0 0 0
+  //         0 0 0 0 0         0 0 0 0 0
+  //         1 1 0 0 1         0 0 0 0 0
+  //         0 0 0 0 0         0 0 0 0 0
   //         0 0 0 0 0         0 0 0 0 0
 
   let mut grid = Grid::new(5);
@@ -86,10 +86,9 @@ fn test_grid_mutate_3() {
 
   grid.mutate();
 
-  assert!(grid.get_grid()[0][1]);
-  assert!(grid.get_grid()[0][2]);
-  assert!(grid.get_grid()[0][3]);
-
+  assert_eq!(grid.get_grid()[0][1], false);
+  assert_eq!(grid.get_grid()[0][2], false);
+  assert_eq!(grid.get_grid()[0][3], false);
   assert_eq!(grid.get_grid()[1][2], false);
   assert_eq!(grid.get_grid()[4][2], false);
 }
