@@ -160,3 +160,59 @@ fn test_get_bottom_right_bigger_than_grid_size() {
 
   assert_eq!(bottom_right.is_some(), false);
 }
+
+#[test]
+fn test_get_neighborhood() {
+  let cell = Cell::new(1, 1, GRID_SIZE).unwrap();
+  let neighborhood = cell.get_neighborhood();
+
+  assert_eq!(neighborhood.len(), 8);
+}
+
+#[test]
+fn test_get_neighborhood_bigger_than_grid_size() {
+  let cell = Cell::new(0, 0, GRID_SIZE).unwrap();
+  let neighborhood = cell.get_neighborhood();
+
+  assert_eq!(neighborhood.len(), 3);
+}
+
+#[test]
+fn test_get_neighborhood_zero_x_index() {
+  let cell = Cell::new(0, 2, GRID_SIZE).unwrap();
+  let neighborhood = cell.get_neighborhood();
+
+  assert_eq!(neighborhood.len(), 5);
+}
+
+#[test]
+fn test_get_neighborhood_zero_y_index() {
+  let cell = Cell::new(2, 0, GRID_SIZE).unwrap();
+  let neighborhood = cell.get_neighborhood();
+
+  assert_eq!(neighborhood.len(), 5);
+}
+
+#[test]
+fn test_get_neighborhood_max_x_index() {
+  let cell = Cell::new(GRID_SIZE - 1, 2, GRID_SIZE).unwrap();
+  let neighborhood = cell.get_neighborhood();
+
+  assert_eq!(neighborhood.len(), 5);
+}
+
+#[test]
+fn test_get_neighborhood_max_y_index() {
+  let cell = Cell::new(2, GRID_SIZE - 1, GRID_SIZE).unwrap();
+  let neighborhood = cell.get_neighborhood();
+
+  assert_eq!(neighborhood.len(), 5);
+}
+
+#[test]
+fn test_get_neighborhood_origin() {
+  let cell = Cell::new(0, 0, GRID_SIZE).unwrap();
+  let neighborhood = cell.get_neighborhood();
+
+  assert_eq!(neighborhood.len(), 3);
+}

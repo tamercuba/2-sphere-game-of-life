@@ -78,6 +78,37 @@ impl Cell {
 
     return Some(Cell::new(self.x + 1, self.y + 1, self.size).unwrap());
   }
+
+  pub fn get_neighborhood(&self) -> Vec<Cell> {
+    let mut neighbors: Vec<Cell> = Vec::new();
+
+    if let Some(cell) = self.get_upper_left() {
+      neighbors.push(cell);
+    }
+    if let Some(cell) = self.get_top() {
+      neighbors.push(cell);
+    }
+    if let Some(cell) = self.get_upper_right() {
+      neighbors.push(cell);
+    }
+    if let Some(cell) = self.get_left() {
+      neighbors.push(cell);
+    }
+    if let Some(cell) = self.get_right() {
+      neighbors.push(cell);
+    }
+    if let Some(cell) = self.get_bottom_left() {
+      neighbors.push(cell);
+    }
+    if let Some(cell) = self.get_bottom() {
+      neighbors.push(cell);
+    }
+    if let Some(cell) = self.get_bottom_right() {
+      neighbors.push(cell);
+    }
+
+    return neighbors;
+  }
 }
 
 impl fmt::Display for Cell {

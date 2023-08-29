@@ -1,5 +1,5 @@
 use std::fmt;
-use super::{ cell::Cell, neighborhood::Neighborhood };
+use super::cell::Cell;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Grid {
@@ -28,10 +28,9 @@ impl Grid {
   }
 
   pub fn get_liveness(&self, cell: Cell) -> bool {
-    let cell_neighborhood = Neighborhood::new(&cell);
     let mut alive_neighbors = 0;
 
-    for neigboor in cell_neighborhood.iter() {
+    for neigboor in cell.get_neighborhood().iter() {
       if self.grid[neigboor.x as usize][neigboor.y as usize] {
         alive_neighbors += 1;
       }
