@@ -1,11 +1,11 @@
 use std::fmt;
-
 use super::{ cell::Cell, neighborhood::Neighborhood };
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Grid {
   grid: Vec<Vec<bool>>,
   size: i16,
+  age: i64,
 }
 
 impl Grid {
@@ -13,6 +13,7 @@ impl Grid {
     Grid {
       grid: vec![vec![false; size as usize]; size as usize],
       size: size,
+      age: 0,
     }
   }
 
@@ -73,29 +74,39 @@ impl Grid {
       }
     }
 
-    self.update_many(to_mutate)
+    self.update_many(to_mutate);
+    self.age += 1;
   }
 
+  pub fn get_age(&self) -> i64 {
+    self.age
+  }
+
+  #[allow(dead_code)]
   pub fn get_grid(&self) -> &Vec<Vec<bool>> {
     &self.grid
   }
 }
 
 impl<'a> fmt::Display for Grid {
+  // Temporary apresentation of the grid just for testing purposes
   fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-    let mut grid_string = String::new();
+    let mut grid_string = String::from("# ").repeat((self.size as usize) + 3);
+    grid_string.push_str("\n#  ");
 
     for row in &self.grid {
       for cell in row {
         if *cell {
-          grid_string.push_str("1 ");
+          grid_string.push_str("\x1b[94m\u{23F9} \x1b[94m");
         } else {
-          grid_string.push_str("0 ");
+          grid_string.push_str("\x1b[93m\u{23F9} \x1b[0m");
         }
       }
-      grid_string.push_str("\n");
+      grid_string.push_str("  #\n#  ");
     }
 
+    let end = String::from("# ").repeat((self.size as usize) + 2);
+    grid_string.push_str(&end);
     write!(f, "{}", grid_string)
   }
 }

@@ -4,14 +4,14 @@ use super::cell::Cell;
 
 #[derive(Debug)]
 pub struct Neighborhood {
-  pub left: Cell,
-  pub right: Cell,
-  pub top: Cell,
-  pub bottom: Cell,
-  pub upper_left: Cell,
-  pub upper_right: Cell,
-  pub bottom_left: Cell,
-  pub bottom_right: Cell,
+  pub left: Option<Cell>,
+  pub right: Option<Cell>,
+  pub top: Option<Cell>,
+  pub bottom: Option<Cell>,
+  pub upper_left: Option<Cell>,
+  pub upper_right: Option<Cell>,
+  pub bottom_left: Option<Cell>,
+  pub bottom_right: Option<Cell>,
 }
 
 impl Neighborhood {
@@ -29,7 +29,7 @@ impl Neighborhood {
   }
 
   pub fn iter(&self) -> Vec<Cell> {
-    vec![
+    let mut _vec = vec![
       self.upper_left,
       self.top,
       self.upper_right,
@@ -38,31 +38,35 @@ impl Neighborhood {
       self.bottom_left,
       self.bottom,
       self.bottom_right
-    ]
+    ];
+    return _vec
+      .iter()
+      .filter(|&x| x.is_some())
+      .map(|x| x.unwrap())
+      .collect();
   }
+}
+
+fn _parse(cell: Option<Cell>) -> String {
+  return match cell {
+    Some(x) => format!("{}", x),
+    None => String::from("None"),
+  };
 }
 
 impl fmt::Display for Neighborhood {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
     write!(
       f,
-      "{}:{} {}:{} {}:{}\n {}:{} X:X {}:{}\n {}:{} {}:{} {}:{}",
-      self.upper_left.x,
-      self.upper_left.y,
-      self.top.x,
-      self.top.y,
-      self.upper_right.x,
-      self.upper_right.y,
-      self.left.x,
-      self.left.y,
-      self.right.x,
-      self.right.y,
-      self.bottom_left.x,
-      self.bottom_left.y,
-      self.bottom.x,
-      self.bottom.y,
-      self.bottom_right.x,
-      self.bottom_right.y
+      "{} {} {}\n {} X:X {}\n {} {} {}",
+      _parse(self.left),
+      _parse(self.top),
+      _parse(self.upper_right),
+      _parse(self.left),
+      _parse(self.right),
+      _parse(self.bottom_left),
+      _parse(self.bottom),
+      _parse(self.bottom_right)
     )
   }
 }
