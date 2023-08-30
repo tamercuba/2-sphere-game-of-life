@@ -1,5 +1,5 @@
 use std::fmt;
-use super::{ cell::Cell, neighborhood::Neighborhood };
+use super::ports::ICell;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Grid {
@@ -17,33 +17,38 @@ impl Grid {
     }
   }
 
-  pub fn update_field(&mut self, cell: Cell) {
-    self.grid[cell.x as usize][cell.y as usize] ^= true;
+  pub fn update_field<T: ICell>(&mut self, cell: T) {
+    self.grid[cell.get_x() as usize][cell.get_y() as usize] ^= true;
   }
 
-  pub fn update_many(&mut self, cells: Vec<Cell>) {
+  pub fn update_many<T: ICell>(&mut self, cells: Vec<T>) {
     for cell in cells {
       self.update_field(cell);
     }
   }
 
-  pub fn get_liveness(&self, cell: Cell) -> bool {
-    let cell_neighborhood = Neighborhood::new(&cell);
+  pub fn get_liveness<T: ICell>(&self, cell: T) -> bool {
     let mut alive_neighbors = 0;
 
-    for neigboor in cell_neighborhood.iter() {
-      if self.grid[neigboor.x as usize][neigboor.y as usize] {
+    for neigboor in cell.get_neighborhood().iter() {
+      if self.grid[neigboor.get_x() as usize][neigboor.get_y() as usize] {
         alive_neighbors += 1;
       }
     }
 
     // Any living cell with less than two living neighbors dies of loneliness.
-    if self.grid[cell.x as usize][cell.y as usize] && alive_neighbors < 2 {
+    if
+      self.grid[cell.get_x() as usize][cell.get_y() as usize] &&
+      alive_neighbors < 2
+    {
       return false;
     }
 
     // Any live cell with more than three live neighbors dies from overpopulation.
-    if self.grid[cell.x as usize][cell.y as usize] && alive_neighbors > 3 {
+    if
+      self.grid[cell.get_x() as usize][cell.get_y() as usize] &&
+      alive_neighbors > 3
+    {
       return false;
     }
 
@@ -54,18 +59,18 @@ impl Grid {
 
     // Any cell with two live neighbors remains in the same state for the next generation.
     if alive_neighbors == 2 {
-      return self.grid[cell.x as usize][cell.y as usize];
+      return self.grid[cell.get_x() as usize][cell.get_y() as usize];
     } else {
       return false;
     }
   }
 
-  pub fn mutate(&mut self) {
-    let mut to_mutate: Vec<Cell> = vec![];
+  pub fn mutate<T: Copy + ICell>(&mut self) {
+    let mut to_mutate: Vec<T> = vec![];
 
     for x in 0..self.size {
       for y in 0..self.size {
-        let cell = Cell::new(x, y, self.size).unwrap();
+        let cell = ICell::new(x, y, self.size).unwrap();
         let liveness = self.get_liveness(cell);
 
         if self.grid[x as usize][y as usize] != liveness {
@@ -91,7 +96,9 @@ impl Grid {
 impl<'a> fmt::Display for Grid {
   // Temporary apresentation of the grid just for testing purposes
   fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-    let mut grid_string = String::from("# ").repeat((self.size as usize) + 3);
+    let mut grid_string =
+      String::from("#  ") +
+      &String::from("# ").repeat((self.size as usize) + 2);
     grid_string.push_str("\n#  ");
 
     for row in &self.grid {
