@@ -1,5 +1,8 @@
 #[cfg(test)]
-use crate::domain::{ grid::Grid, cell::Cell };
+use crate::domain::{
+  grid::Grid,
+  cells::finite_plane_cell::FinitePlaneCell as Cell,
+};
 
 #[test]
 fn test_new_grid() {
@@ -28,7 +31,7 @@ fn test_grid_mutate_1() {
     ]
   );
 
-  grid.mutate();
+  grid.mutate::<Cell>();
 
   assert_eq!(grid.get_grid()[1][2], true);
   assert_eq!(grid.get_grid()[2][2], true);
@@ -55,7 +58,7 @@ fn test_grid_mutate_2() {
     ]
   );
 
-  grid.mutate();
+  grid.mutate::<Cell>();
 
   assert!(grid.get_grid()[1][1]);
   assert!(grid.get_grid()[1][3]);
@@ -84,7 +87,7 @@ fn test_grid_mutate_3() {
     ]
   );
 
-  grid.mutate();
+  grid.mutate::<Cell>();
 
   assert_eq!(grid.get_grid()[0][1], false);
   assert_eq!(grid.get_grid()[0][2], false);

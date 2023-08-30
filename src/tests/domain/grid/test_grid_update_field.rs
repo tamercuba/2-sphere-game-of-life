@@ -1,5 +1,8 @@
 #[cfg(test)]
-use crate::domain::{ cell::Cell, grid::Grid };
+use crate::domain::{
+  cells::finite_plane_cell::FinitePlaneCell as Cell,
+  grid::Grid,
+};
 
 #[test]
 fn test_grid_update_field() {
